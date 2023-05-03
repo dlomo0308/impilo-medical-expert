@@ -175,6 +175,45 @@
     background: #23c01e;
     color: #fbff05;
   }
+  .selected-list li{
+    color: #000;
+    padding: 5px;
+    list-style: none;
+    border: 1px solid #b5c3ce;
+    width: 35%;
+    margin: 10px;
+    border-radius: 20px;
+  }
+  
+  .selected {
+    background-color: #cce5ff;
+  }
+
+  select[name="symptoms"] option.selected {
+    background-color: #c8d9eb;
+    color: #8b8b8b;
+  }
+  select[name="symptoms"] option{
+    color: #000;
+  }
+  /* .selected-list {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .unselected {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .close-icon{
+    color: red;
+    cursor: pointer;
+    font-size: 25px;
+    margin-right: 5%;
+  } */
+
+
+
   
   @media (max-width: 991px){
     .contact{

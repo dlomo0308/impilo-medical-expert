@@ -79,8 +79,12 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "impilo.users.apps.UsersConfig",
-    "impilo.diagnosis.apps.DiagnosisConfig",
-    # Your stuff: custom apps go here
+    # "impilo.diagnosis.apps.DiagnosisConfig",
+    # "impilo.diagnose.apps.DiagnoseConfig",
+    #"impilo.diagnosis.forms.Symptom"
+    'diagnosis.apps.DiagnosisConfig',
+   
+    
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

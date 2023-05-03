@@ -1,62 +1,126 @@
 {% extends "base.html" %}
 {% block content %}
+
 <h1>Diagnosis Page</h1>
+<br>
 
 <div class="diagnosis">
-    <form action="">
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="symps">
-            <label for="">Symptom 1</label>
-            <select name="symptom" id="">
-                <option value="">symptom 1</option>
-                <option value="">symptom 2</option>
-                <option value="">symptom 3</option>
-            </select>
-        </div>
-        <div class="diagnosis-btn">
-            <input type="submit" value="Diagnose">
-        </div>
+ 
+  <form action="POST" id="diagnosis-form">
+    {% csrf_token %}
+    <!-- {{ form.symptoms }} -->
+    <label for="" style="margin-right: 10px;"><h4>Symptoms:</h4></label>
+    <select name="symptoms" id="symptoms-select" class="form-control">
+      <option selected>Select Symptoms</option>
+  
+      {% for symptom in form.symptoms %}
+        <option value="{{ symptom.value }}" {% if symptom.selected %}selected{% endif %}>
+          {{ symptom.choice_label }}
+        </option>
+      {% endfor %}
+    </select>
+  
+    <br><br>
+  
+    <div class="selected-symptoms form-group">
+      <span class="font-weight-bold">Selected symptoms:</span>
+      <ul id="symptom-list" class="selected-list">
+        
+      </ul>
+      <input type="hidden" id="selected-symptoms-field" name="selected_symptoms">
+    </div>
+  
+    <br>
+    <div class="diagnosis-btn">
+      <input type="submit" value="Diagnose" class="btn btn-primary" id="diagnose-btn" disabled>
+    </div>
+  </form>
+  
+  <script>
+    const symptomSelect = document.querySelector('select[name="symptoms"]');
+const symptomList = document.getElementById('symptom-list');
+const selectedSymptomsField = document.getElementById('selected-symptoms-field');
+const diagnoseBtn = document.getElementById('diagnose-btn');
+const selectedSymptoms = [];
 
-    </form>
-</div>
+function updateSelectedSymptoms() {
+  selectedSymptomsField.value = selectedSymptoms.join(', ');
+  symptomList.innerHTML = '';
+  for (const symptom of selectedSymptoms) {
+    const symptomListItem = document.createElement('li');
+    symptomListItem.textContent = symptom;
+    symptomListItem.classList.add('selected');
+    const closeIcon = document.createElement('span');
+    closeIcon.className = 'close-icon text-danger';
+    closeIcon.setAttribute('aria-hidden', 'true');
+    closeIcon.innerHTML = '&times';
+    symptomListItem.appendChild(closeIcon);
+    symptomList.appendChild(symptomListItem);
 
+    // Add an event listener to the close icon to remove the selected symptom
+    closeIcon.addEventListener('click', () => {
+      const symptomIndex = selectedSymptoms.indexOf(symptom);
+      if (symptomIndex > -1) {
+        selectedSymptoms.splice(symptomIndex, 1);
+        updateSelectedSymptoms();
+        symptomSelect.add(new Option(symptom, symptom));
+        if (selectedSymptoms.length === 0 || selectedSymptoms.length > 5) {
+          diagnoseBtn.setAttribute('disabled', '');
+        } else {
+          diagnoseBtn.removeAttribute('disabled');
+        }
+      }
+    });
+  }
+
+  // Remove the corresponding option from the select element for selected symptoms
+  const options = symptomSelect.options;
+  for (let i = 0; i < options.length; i++) {
+    const option = options[i];
+    if (selectedSymptoms.includes(option.textContent)) {
+      option.disabled = true;
+      option.classList.add('selected');
+    } else {
+      option.disabled = false;
+      option.classList.remove('selected');
+    }
+  }
+
+  if (selectedSymptoms.length === 0 || selectedSymptoms.length > 5) {
+    diagnoseBtn.setAttribute('disabled', '');
+  } else {
+    diagnoseBtn.removeAttribute('disabled');
+  }
+}
+
+symptomSelect.addEventListener('change', (event) => {
+  const selectedOption = event.target.selectedOptions[0];
+  const selectedSymptom = selectedOption.textContent;
+  if (selectedSymptoms.length >= 5) {
+    alert('You have already selected the maximum number of symptoms.');
+    selectedOption.selected = false;
+    return;
+  }
+  selectedSymptoms.push(selectedSymptom);
+  updateSelectedSymptoms();
+  selectedOption.disabled = true;
+});
+
+const form = document.getElementById('diagnosis-form');
+form.addEventListener('submit', (event) => {
+  if (selectedSymptoms.length === 0) {
+    event.preventDefault();
+    alert('Please select at least one symptom.');
+  }
+  else if (selectedSymptoms.length > 5) {
+    event.preventDefault();
+    alert('You have selected too many symptoms.');
+  }
+});
+  </script>
+<!-- <script>
+  new MultiSelectTag('symptoms-select')  // id
+</script> -->
+
+<!-- <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script> -->
 {% endblock content %}

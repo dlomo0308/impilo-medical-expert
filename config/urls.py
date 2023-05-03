@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
 #import our diagnosis views
-from impilo.diagnosis import views
+from diagnosis import views
 
 urlpatterns = [
     path(
