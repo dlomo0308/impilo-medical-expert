@@ -1,5 +1,8 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
 /* LANDING CSS */
-
+.items-center{
+  align-items: center;
+}
 .landing{
     display: flex;
     flex-direction: row;
@@ -38,6 +41,7 @@
   
   .landingImage img{
     width: 28vw;
+    margin-top: 100px;
   }
   .landingText .btn:hover {
     background: #002f5a;
@@ -180,13 +184,15 @@
     padding: 5px;
     list-style: none;
     border: 1px solid #b5c3ce;
-    width: 35%;
+    width: fit-content;
     margin: 10px;
-    border-radius: 20px;
+    border-radius: 10px;
   }
   
   .selected {
     background-color: #cce5ff;
+    padding: auto;
+    position: relative;
   }
 
   select[name="symptoms"] option.selected {
@@ -196,21 +202,142 @@
   select[name="symptoms"] option{
     color: #000;
   }
-  /* .selected-list {
-    background-color: #d4edda;
-    color: #155724;
-  }
-
-  .unselected {
-    background-color: #f8d7da;
-    color: #721c24;
-  }
+  
+ 
   .close-icon{
     color: red;
     cursor: pointer;
-    font-size: 25px;
-    margin-right: 5%;
+  } 
+  #diagnosis-form .gender{
+    display: flex;
+    font-weight: bolder;
+  }
+  #diagnosis-form .gender ul{
+    display: flex;
+    list-style: none;
+  }
+  #diagnosis-form .gender ul li{
+    margin-right: 10px;
+    font-weight: normal;
+    font-size: 20px;
+  }
+    /* Style the radio buttons */
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 50%;
+    border: 2px solid #000;
+    width: 1em;
+    height: 1em;
+    margin: 0 0.5em 0 0;
+    vertical-align: middle;
+    top: -1px;
+}
+
+  /* Style the radio buttons when selected */
+  input[type="radio"]:checked {
+      background-color: #856265;
+  }
+
+  /* -----RESULTS PAGE----- */
+  .results-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* height: 100vh; */
+    /* margin-top: -70px; */
+  }
+  /* .right-wrapper .btn{
+    margin-bottom: -80%;
   } */
+  .related-symptoms, .dis-causes, .treatments, .effects{
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    margin: 10px;
+    height: 150px;
+    overflow-y: auto;
+  }
+  .related-symptoms h3, .dis-causes h3, .treatments h3, .effects h3{
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 5px;
+  }
+ .info-box {
+    background-color: #fce4ec;
+    padding: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+ .info-icon {
+    color: #e91e63;
+    font-size: 32px;
+    margin-right: 20px;
+  }
+
+ .info-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #e91e63;
+  }
+  .disease-info-wrap{
+    display: h;
+  }
+  .hide{
+    display: none;
+  }
+  .card{
+    margin-right: 20px;
+    height: 200px;
+    overflow-y: auto;
+  }
+  .card .card-header{
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+  .rd-bg{
+    background: red;
+  }
+  .bl-bg{
+    background: blue;
+  }
+  .gr-bg{
+    background: green;
+  }
+  .gy-bg{
+    background: gray;
+  }
+  .card-body ul{
+    margin-left: 0;
+    padding: 0;
+  }
+  .box{
+    box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5),
+    0 -10px 10px -10px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+  }
+  .disease-desc h3{
+    text-decoration: underline;
+    padding: 5px;
+  }
+
+
+
+
+
+
 
 
 
@@ -230,5 +357,6 @@
         width: 80%;
     }
   }
+
 
 

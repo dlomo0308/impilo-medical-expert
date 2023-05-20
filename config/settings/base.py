@@ -3,6 +3,7 @@ Base settings to build other settings files upon.
 """
 
 from pathlib import Path
+import os
 
 import environ
 
@@ -79,10 +80,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "impilo.users.apps.UsersConfig",
-    # "impilo.diagnosis.apps.DiagnosisConfig",
-    # "impilo.diagnose.apps.DiagnoseConfig",
-    #"impilo.diagnosis.forms.Symptom"
-    'diagnosis.apps.DiagnosisConfig',
+    # 'diagnosis.apps.DiagnosisConfig',
+    'diagnosiz.apps.DiagnosizConfig'
    
     
 ]
@@ -163,6 +162,8 @@ STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
+CSV_MODEL_PATH = os.path.join(BASE_DIR, 'notebook/Data')
+
 
 # MEDIA
 # ------------------------------------------------------------------------------
@@ -217,6 +218,7 @@ FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 # SECURITY
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#session-cookie-httponly
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_HTTPONLY = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-httponly
 CSRF_COOKIE_HTTPONLY = True

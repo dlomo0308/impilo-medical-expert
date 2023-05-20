@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Diagnose Page</h1>
+  <form method="POST" action="{% url 'results' %}" id="diagnosis-form">
+    {% csrf_token %}
+    <label for="symptoms-select"><h4>Symptoms:</h4></label>
+    <select name="symptoms" id="symptoms-select" class="form-control">
+      {% for symptom in form.symptoms %}
+        <option value="{{ symptom.value }}">{{ symptom.choice_label }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <div class="selected-symptoms form-group">
+        <span class="font-weight-bold">Selected symptoms:</span>
+        <ul id="symptom-list" class="selected-list"></ul>
+        <input type="hidden" id="selected-symptoms-field" name="selected_symptoms">
+      </div>
+      <div class="diagnosis-btn">
+        <input type="submit" value="Diagnose" class="btn btn-primary" id="diagnose-btn" disabled>
+      </div></form>
+
+{% endblock %}

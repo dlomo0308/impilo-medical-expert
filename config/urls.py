@@ -6,7 +6,8 @@ from django.views.generic import TemplateView
 from django.views import defaults as default_views
 
 #import our diagnosis views
-from diagnosis import views
+# from diagnosis import views
+from diagnosiz import views
 
 urlpatterns = [
     path(
@@ -33,7 +34,10 @@ urlpatterns = [
     ),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    path('diagnosis/', views.diagnosis, name='diagnosis'),
+    # path('diagnose/', views.diagnose, name='diagnose'),
+    # path('diagnosis/', views.diagnosis, name='diagnosis'),
+    path('diagnosiz/',views.diagnosiz, name='diagnosiz'),
+    path('results/', views.results, name='results'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
