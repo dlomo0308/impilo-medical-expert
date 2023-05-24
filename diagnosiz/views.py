@@ -19,16 +19,16 @@ from django.conf import settings
 import os
 from urllib.parse import urlencode
 from .utils import get_disease_info
+from .forms import csv_path, csv_file
 
 
-csv_path = getattr(settings, 'CSV_MODEL_PATH', None)
-csv_file = os.path.join(csv_path, 'Testing.csv')
-mode_file = os.path.join(csv_path, 'impilo_ml_model.sav')
+
+mode_file = os.path.join(csv_path, 'new_impilo.sav')
 
 model = joblib.load(mode_file)
 symptoms_df = pd.read_csv(csv_file)
 
-symptoms = symptoms_df.columns[:-1]
+symptoms = symptoms_df.columns[1:]
 
 def predict_disease(selected_symptoms):
     # Convert the selected symptoms to binary format
@@ -38,7 +38,12 @@ def predict_disease(selected_symptoms):
     
     # make a prediction
     predicted_disease = model.predict(binary_features)[0]
+    
+    # check if the predicted disease is in your dataset
+    if predicted_disease not in symptoms_df['diseases'].values:
+        return 'The selected symptoms do not match any diseases in our dataset.'
     return predicted_disease
+
 
 @csrf_exempt
 @login_required

@@ -19,7 +19,7 @@
 <div class="box">
 {% if disease_info %}
 <div class="disease-desc">
-   <h3>Info about: {{ disease_info.name }}</h3>
+   <h3>What is: <span>{{ disease_info.name }}</span>?</h3>
   <p>{{ disease_info.description }}</p>
 </div>
  
@@ -39,7 +39,7 @@
       </div>
 
       <div class="card text-white gy-bg mb-3 col-sm-6" style="max-width: 18rem;">
-        <div class="card-header">Causes</div>
+        <div class="card-header">Causes:</div>
         <div class="card-body">
           <ul>
             {% for cause in disease_info.causes %}
@@ -49,13 +49,13 @@
         </div>
       </div>
       <div class="card text-white gr-bg mb-3 col-sm-6" style="max-width: 18rem;">
-        <div class="card-header">Treatments</div>
+        <div class="card-header">Treatments:</div>
         <div class="card-body">
           <p class="card-text">{{ disease_info.treatments }}</p>
         </div>
       </div>
       <div class="card text-white rd-bg mb-3 col-sm-6" style="max-width: 18rem;">
-        <div class="card-header rd-bg">Effects</div>
+        <div class="card-header rd-bg">Effects:</div>
         <div class="card-body">
           <ul>
             {% for effect in disease_info.effects %}
@@ -74,7 +74,7 @@
   <p>No information about the predicted disease was found.</p>
   {% endif %}
   
-  </div>
+  
 </div>
 
 
