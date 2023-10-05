@@ -54,7 +54,7 @@ $(document).ready(() => {
     const selectedSymptoms = JSON.parse(selectedSymptomsField.val());
     if (selectedSymptoms.length < 3) {
       event.preventDefault();
-      alert('Please select at least three symptom.');
+      alert('Please select at least three symptoms');
     } else if (selectedSymptoms.length > 5) {
       event.preventDefault();
       alert('You have selected too many symptoms.');
@@ -80,4 +80,32 @@ $(document).ready(() => {
     // Update the selected symptoms field with the updated list of symptoms
     selectedSymptomsField.val(JSON.stringify(selectedSymptoms));
   }
+  $('#symptoms-select').select2();
+
+  function myFunction(diagnosed_diseases) {
+    console.log(diagnosed_diseases);
+    // Do something with the diagnosed_diseases data
+}
+// Send an AJAX request to the server to check if the user has performed a diagnosis in the past 24 hours
+function checkDiagnosis() {
+  $.ajax({
+      url: "{% url 'diagnosiz' %}",
+      method: "POST",
+      data: $('#symptom-form').serialize(),
+      success: function(response) {
+          if (response.status === 'error_time') {
+              // Display the error message as a dialog
+              alert(response.message);
+              // Redirect the user to the home page after they click "OK"
+              window.location.href = "{% url 'home' %}";
+          }
+      }
+  });
+}
+
+// Attach the checkDiagnosis function to the submit button
+$('#submit-btn').on('click', function(event) {
+  event.preventDefault();
+  checkDiagnosis();
+});
 });

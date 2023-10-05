@@ -43,11 +43,21 @@ LOCALE_PATHS = [str(BASE_DIR / "locale")]
 # DATABASES
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
+# DATABASES = {
+#     "default": env.db(
+#         "DATABASE_URL",
+#         default=f"sqlite:///{str(BASE_DIR / 'impilo.db')}",
+#     )
+# }
 DATABASES = {
-    "default": env.db(
-        "DATABASE_URL",
-        default=f"sqlite:///{str(BASE_DIR / 'impilo.db')}",
-    )
+    'default': {
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
+       'NAME': 'impilo',
+       'USER': 'postgres',
+       'PASSWORD': 'dl@m@O3O8!997',
+       'HOST': 'localhost',
+       'PORT': '5432',
+    }
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
@@ -234,6 +244,13 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.smtp.EmailBackend",
 )
+# MAILTRAP CODE
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '659bddb346ff58'
+EMAIL_HOST_PASSWORD = '********1554'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 # https://docs.djangoproject.com/en/2.2/ref/settings/#email-timeout
 EMAIL_TIMEOUT = 5
 

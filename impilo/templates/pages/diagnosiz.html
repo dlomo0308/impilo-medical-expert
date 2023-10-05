@@ -11,14 +11,10 @@
         {% endfor %}
       </ul>
     {% endif %}
+
     <form action="{% url 'diagnosiz' %}" method="POST" id="diagnosis-form">
       {% csrf_token %}
       <h1>Diagnosis Page</h1>
-      <div id="diagnosis-result"></div>
-      <!-- <div class="gender">
-        <label for="{{ form.gender.id_for_label }}">Gender:</label>
-        {{ form.gender }}
-      </div> -->
       <label for="symptoms"><h4>Symptoms:</h4></label>
       <select name="symptoms" id="symptoms-select" class="form-control">
         <option value="">-----Select Symptoms-----</option>
@@ -45,7 +41,6 @@
         "Please note that some symptoms on this list are typically experienced by individuals of a specific gender. For example, the symptom 'abnormal menstruation' is typically experienced by people who menstruate. However, it's important to note that symptoms can be experienced by people of any gender, and we encourage all users to accurately report their symptoms regardless of their gender identity." 
       </p>
   </div>
-
 
 {% endblock %}
 

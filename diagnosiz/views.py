@@ -1,4 +1,4 @@
-import pandas as pd
+import pandas as pd 
 from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.contrib import messages
@@ -20,6 +20,11 @@ import os
 from urllib.parse import urlencode
 from .utils import get_disease_info
 from .forms import csv_path, csv_file
+
+from django.conf import settings
+from .models import DiagnosedDisease
+from datetime import datetime, timedelta, date
+from django.utils import timezone
 
 
 
@@ -45,6 +50,10 @@ def predict_disease(selected_symptoms):
     return predicted_disease
 
 
+# def to_dict(self):
+#         # Convert the last_diagnosis_timestamp field to a string representation
+#         last_diagnosis_timestamp_str = self.last_diagnosis_timestamp.isoformat() if self.last_diagnosis_timestamp else None
+
 @csrf_exempt
 @login_required
 def diagnosiz(request):
@@ -58,26 +67,50 @@ def diagnosiz(request):
                 # perform prediction
                 predicted_disease = predict_disease(selected_symptoms)
 
-                # redirect to results page with selected symptoms and predicted disease as URL parameters
+                # Check if the user has performed a diagnosis in the past 24 hours
+                last_diagnosis_time = request.session.get('last_diagnosis_time')
+                if last_diagnosis_time:
+                    time_since_last_diagnosis = datetime.now(timezone.utc) - datetime.fromisoformat(last_diagnosis_time) #86400
+                    if time_since_last_diagnosis.days == 0 and time_since_last_diagnosis.seconds < 86400: 
+                        messages.error(request, "You can perform a diagnosis only once in 24 hours.")                
+                        return redirect('diagnosiz')
+
+                
                 params = {'selected_symptoms': selected_symptoms_json, 'predicted_disease': predicted_disease}
                 url = reverse('results') + '?' + urlencode(params)
+
+                if predicted_disease: 
+                    diagnosed_disease_obj = DiagnosedDisease.create(
+                        userId=request.user.id, 
+                        email=request.user.email, 
+                        date_of_diagnosis= str(timezone.now().date()),
+                        symptoms_selected= ', '.join(selected_symptoms),
+                        diagnosed_disease=predicted_disease
+                        )
+                    diagnosed_disease_obj.save()
+                # Store the current time in the session
+                request.session['last_diagnosis_time'] = str(timezone.now())
+
                 return redirect(url)
+            else:
+                return HttpResponse("There is an error")
         else:
             messages.error(request, "Invalid Form Data.")
             print('Invalid form data:', request.POST)
     else:
-        messages.error(request, 'Method is not POST')
-        print("Method is: "+ request.method)
+        # messages.error(request, 'Method is not POST')
+        # print("Method is: "+ request.method)
         form = SymptomForm()
         context = {'form': form}
         return render(request, 'pages/diagnosiz.html', context=context)
-
-
+    
+# results view function to show predicted results
 def results(request):
     if request.method =='GET':
          # Get the selected symptoms and predicted disease from the query parameters
         selected_symptoms = request.GET.getlist('selected_symptoms')
         predicted_disease = request.GET.get('predicted_disease')
+        
         # Get the disease information for the predicted disease
         disease_info = get_disease_info(predicted_disease)
         # Render the results.html template with the selected symptoms and disease information
@@ -87,11 +120,22 @@ def results(request):
         # If the request method is not GET, create a new DiagnosisForm instance
         messages.error(request, "Method is not GET")
     # Render the index.html template with the DiagnosisForm instance
-    return render(request, 'pages/results.html')
-    
+    return render(request, 'pages/diagnosiz.html')
 
 
+#diagnosis history view
+@login_required
+def diagnosis_history(request):
+    user = request.user
+    diagnoses = DiagnosedDisease.objects.filter(user=user).order_by('date_of_diagnosis')
+    context = {'diagnoses':diagnoses}
+    return render(request, 'pages/diagnosis_history.html', context)
 
+
+# Store the timestamp of the user's last diagnosis in the session data
+                # request.session['last_diagnosis_timestamp'] = timezone.now()
+
+                
 
 
 

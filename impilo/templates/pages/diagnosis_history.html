@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Diagnosis History</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Date of Diagnosis</th>
+                <th>Selected Symptoms</th>
+                <th>Predicted Disease</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for diagnosis in diagnoses %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ diagnosis.date_of_diagnosis }}</td>
+                <td>{{ diagnosis.symptoms_selected }}</td>
+                <td>{{ diagnosis.diagnosed_disease }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="color: rgb(182, 67, 28);">Sorry!!! You have no diagnosis history.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

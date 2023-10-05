@@ -6,6 +6,9 @@ from django.views.generic import (
     RedirectView,
     UpdateView,
 )
+from django.shortcuts import render
+from django.core.mail import EmailMessage
+from .formss import ContactForm
 
 User = get_user_model()
 
@@ -60,3 +63,29 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+def contact(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            email_subject = f'Contact Form Submission from {name}'
+            email_body = f'Name: {name}\nEmail: {email}\n\n{message}'
+            email = EmailMessage(
+                subject=email_subject,
+                body=email_body,
+                from_email=email, # use the user's email address entered in the form
+                to=['2f299c540e-da0fe5@inbox.mailtrap.io'], # replace with your Mailtrap inbox email address
+                reply_to=[email],
+                headers={'Content-Type': 'text/plain'},
+            )
+            request.session['name'] = name
+            email.send()
+            context = {'name':name}
+            return render(request, 'pages/contact_success.html', context)
+    else:
+        form = ContactForm()
+        context = {'form': form}
+    return render(request, 'pages/contact.html', context )

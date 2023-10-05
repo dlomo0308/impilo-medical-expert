@@ -7,7 +7,8 @@ from django.views import defaults as default_views
 
 #import our diagnosis views
 # from diagnosis import views
-from diagnosiz import views
+from diagnosiz import views as diagnosiz_views
+from impilo.users import views as users_views
 
 urlpatterns = [
     path(
@@ -20,11 +21,11 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
     ),
-    path(
-        "contact/",
-        TemplateView.as_view(template_name="pages/contact.html"),
-        name="contact",
-    ),
+    # path(
+    #     "contact/",
+    #     TemplateView.as_view(template_name="pages/contact.html"),
+    #     name="contact",
+    # ),
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
@@ -34,10 +35,11 @@ urlpatterns = [
     ),
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
-    # path('diagnose/', views.diagnose, name='diagnose'),
-    # path('diagnosis/', views.diagnosis, name='diagnosis'),
-    path('diagnosiz/',views.diagnosiz, name='diagnosiz'),
-    path('results/', views.results, name='results'),
+    path('contact/', users_views.contact, name='contact'),
+    path('diagnosiz/',diagnosiz_views.diagnosiz, name='diagnosiz'),
+    path('diagnosis_history/', diagnosiz_views.diagnosis_history, name='diagnosis_history'),
+    path('results/', diagnosiz_views.results, name='results'),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
