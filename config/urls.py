@@ -36,7 +36,7 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Your stuff: custom urls includes go here
     path('contact/', users_views.contact, name='contact'),
-    path('diagnosiz/',diagnosiz_views.diagnosiz, name='diagnosiz'),
+    path('diagnosis/',diagnosiz_views.diagnosiz, name='diagnosiz'),
     path('diagnosis_history/', diagnosiz_views.diagnosis_history, name='diagnosis_history'),
     path('results/', diagnosiz_views.results, name='results'),
     

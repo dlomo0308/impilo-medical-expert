@@ -101,8 +101,10 @@ def diagnosiz(request):
         # messages.error(request, 'Method is not POST')
         # print("Method is: "+ request.method)
         form = SymptomForm()
-        context = {'form': form}
-        return render(request, 'pages/diagnosiz.html', context=context)
+        context = {'form': form,
+                   'title': 'Diagnosis'
+                   }
+        return render(request, 'pages/diagnosiz.html', context=context )
     
 # results view function to show predicted results
 def results(request):
